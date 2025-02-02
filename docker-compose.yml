@@ -1,0 +1,75 @@
+version: "3.7"
+
+services:
+    nginx:
+        image: nginx:latest
+        restart: no
+        tty: true
+        volumes:
+            - ./:/var/www
+            - ./_docker/nginx/conf.d:/etc/nginx/conf.d
+        ports:
+            - 8878:80
+        depends_on:
+            - php_job_advertisements
+        container_name: webserver_job_advertisements
+        networks:
+            - job_advertisements-network
+
+    db_job_advertisements:
+        image: postgres:15-alpine
+        restart: unless-stopped
+        volumes:
+            - ./tmp/db:/var/lib/postgresql/data
+        environment:
+            POSTGRES_DB: job_advertisements
+            POSTGRES_PASSWORD: test
+            POSTGRES_USER: test
+        ports:
+            - 5432:5432
+        container_name: db_job_advertisements
+        tty: true
+        networks:
+            - job_advertisements-network
+
+    php_job_advertisements:
+        build:
+            context: .
+            dockerfile: _docker/php/Dockerfile
+        volumes:
+            - ./:/var/www
+        depends_on:
+            - db_job_advertisements
+        container_name: php_job_advertisements
+        restart: no
+        environment:
+            SERVICE_NAME: app
+            SERVICE_TAGS: dev
+        working_dir: /var/www
+        tty: true
+        networks:
+            - job_advertisements-network
+
+    redis:
+        image: bitnami/redis:latest
+        restart: unless-stopped
+        container_name: redis_job_advertisements
+        tty: true
+        ports:
+            - "6379:6379"
+        networks:
+            - job_advertisements-network
+        volumes:
+            - ./_docker/redis:/bitnami/redis/data
+        environment:
+            ALLOW_EMPTY_PASSWORD: ${REDIS_ALLOW_EMPTY_PASSWORD:-no}
+            REDIS_PASSWORD: ${REDIS_PASSWORD:-redis}
+
+#Docker Networks
+networks:
+    job_advertisements-network:
+        driver: bridge
+#Volumes
+volumes:
+    dbdata:
+        driver: local
