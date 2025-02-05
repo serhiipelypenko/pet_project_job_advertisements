@@ -13,6 +13,10 @@ RUN apk add --no-cache \
     icu-dev \
     libzip-dev
 
+ RUN set -ex \
+ && apk --no-cache add \
+ postgresql-dev
+
 #####################################
 # PHP Extensions
 #####################################
@@ -45,8 +49,8 @@ RUN docker-php-ext-enable opcache
 # Install the PHP pcntl extention
 RUN docker-php-ext-install pcntl
 
-# Install the PHP pdo_mysql extention
-RUN docker-php-ext-install pdo_mysql
+# Install the PHP pdo_mysql pdo_pgsql extention
+RUN docker-php-ext-install pdo pdo_pgsql pdo_mysql
 
 # Install the PHP redis driver
 RUN pecl install redis && \
