@@ -11,6 +11,17 @@
                 <x-nav-link url="/jobs/saved" :active="request()->is('/jobs/saved')" >Saved Jobs</x-nav-link>
                 <x-nav-link url="/dashboard" :active="request()->is('/dashboard')" icon="gauge" >Dashboard</x-nav-link>
                 <x-logout-button />
+                <div class="flex items-center space-x-3">
+                    <a href="{{route('dashboard')}}">
+                        @if(Auth::user()->avatar)
+                            <img src="{{asset('storage/' . Auth::user()->avatar)}}" alt="{{Auth::user()->name}}"
+                                 class="w-10 h-10 rounded-full">
+                        @else
+                            <img src="{{asset('storage/avatars/default-avatar.png')}}" alt="{{Auth::user()->name}}"
+                                 class="w-10 h-10 rounded-full">
+                        @endif
+                    </a>
+                </div>
                 <x-button-link  url="/jobs/create" icon="edit">Create Job</x-button-link>
             @else
                 <x-nav-link url="/login" :active="request()->is('/login')" >Login</x-nav-link>
@@ -33,6 +44,18 @@
             <x-logout-button />
             <div class="pt-2"></div>
             <x-button-link  url="/jobs/create" icon="edit" :block="true">Create Job</x-button-link>
+
+            <div class="flex items-center space-x-3">
+                <a href="{{route('dashboard')}}">
+                    @if(Auth::user()->avatar)
+                        <img src="{{asset('storage/' . Auth::user()->avatar)}}" alt="{{Auth::user()->name}}"
+                        class="w-10 h-10 rounded-full">
+                    @else
+                        <img src="{{asset('storage/avatars/default-avatar.png')}}" alt="{{Auth::user()->name}}"
+                             class="w-10 h-10 rounded-full">
+                    @endif
+                </a>
+            </div>
         @else
             <x-nav-link url="/login" :active="request()->is('/login')" :mobile="true" >Login</x-nav-link>
             <x-nav-link url="/register" :active="request()->is('/register')" :mobile="true" >Register</x-nav-link>
