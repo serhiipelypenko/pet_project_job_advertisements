@@ -19,6 +19,6 @@ class DatabaseSeeder extends Seeder
         DB::table('users')->truncate();
 
         $this->call(RandomUserSeeder::class);
-        $this->call(RandomJobSeeder::class);
+        $this->call(JobSeeder::class);
     }
 }
