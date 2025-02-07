@@ -3,25 +3,18 @@
     <section class="md:col-span-3">
         <div class="rounded-lg shadow-md bg-white p-3">
             <div class="flex justify-between items-center">
-                <a
-                    class="block p-4 text-blue-700"
-                    href="{{route('jobs.index')}}"
-                >
+                <a class="block p-4 text-blue-700" href="{{route('jobs.index')}}">
                     <i class="fa fa-arrow-alt-circle-left"></i>
                     Back To Listings
                 </a>
                 <div class="flex space-x-3 ml-4">
-                    <a
-                        href="/edit"
-                        class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded"
-                    >Edit</a
-                    >
+                    <a href="{{route('jobs.edit',$job->id)}}" class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded">Edit</a>
                     <!-- Delete Form -->
-                    <form method="POST">
-                        <button
-                            type="submit"
-                            class="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded"
-                        >
+                    <form method="POST" action="{{route('jobs.destroy',$job->id)}}"
+                          onsubmit="return confirm('Are you sure that you want to delete this job?')">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded">
                             Delete
                         </button>
                     </form>
@@ -89,7 +82,7 @@
             Company Info
         </h3>
         @if($job->company_logo)
-        <img src="/images/{{$job->company_logo}}"
+        <img src="/storage/{{$job->company_logo}}"
             alt="Ad"  class="w-full rounded-lg mb-4 m-auto"/>
         @endif
         <h4 class="text-lg font-bold">{{$job->company_name}}</h4>
