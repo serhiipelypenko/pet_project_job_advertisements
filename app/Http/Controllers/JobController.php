@@ -28,7 +28,7 @@ class JobController extends Controller
 
     // @desc Display a single job listing
     // @route GET /jobs/{$id}
-    public function show(Job $job): string
+    public function show(Job $job): View
     {
         return view('jobs.show')->with('job', $job);
     }
