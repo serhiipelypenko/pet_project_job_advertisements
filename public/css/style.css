@@ -12,3 +12,13 @@
     background-image: url("../images/hero.jpg");
 }
 [x-cloak] {display: none !important; }
+
+#applicant-form {
+    position: relative;
+    z-index: 2;
+}
+
+#map {
+    z-index: 1;
+    height: 400px;
+}
